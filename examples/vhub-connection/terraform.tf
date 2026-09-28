@@ -1,0 +1,22 @@
+terraform {
+  required_version = "~> 1.0"
+
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+provider "azurerm" {
+  alias           = "connectivity"
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  features {}
+}
+
+data "azurerm_subscription" "current" {}

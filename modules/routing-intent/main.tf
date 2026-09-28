@@ -1,0 +1,23 @@
+# routing intent
+resource "azurerm_virtual_hub_routing_intent" "this" {
+  for_each = var.configs
+
+  name = coalesce(
+    each.value.name, each.key
+  )
+
+  virtual_hub_id = each.value.virtual_hub_id
+
+  dynamic "routing_policy" {
+    for_each = each.value.routing_policies
+
+    content {
+      name = coalesce(
+        routing_policy.value.name, routing_policy.key
+      )
+
+      destinations = routing_policy.value.destinations
+      next_hop     = routing_policy.value.next_hop
+    }
+  }
+}
